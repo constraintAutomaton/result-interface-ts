@@ -1,7 +1,7 @@
 # result-interface
 
 ![npm version](https://img.shields.io/npm/v/result-interface)
-![Unit Tests Status](https://img.shields.io/github/actions/workflow/status/constraintAutomaton/result-interface-ts/ci.yml
+![Unit Tests Status](https://img.shields.io/github/actions/workflow/status/constraintAutomaton/result-interface-ts/ci.yml?label=unit+test
 )
 
 
