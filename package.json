@@ -2,6 +2,10 @@
   "name": "result-interface",
   "module": "index.ts",
   "type": "module",
+  "author": {
+    "name": "Bryan-Elliott Tam"
+  },
+  "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
   "version": "1.0.0",
   "main": "./dist/index.js",
