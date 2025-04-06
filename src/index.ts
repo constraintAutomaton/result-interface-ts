@@ -17,7 +17,7 @@ export type Result<V, E = Error> = IResult<V> | IError<E>;
  * @template V - The type of the successful result.
  * @template E - The type of the error in case of failure.
  */
-export type SafePromise<V, E=Error> = Promise<Result<V, E>>;
+export type SafePromise<V, E = Error> = Promise<Result<V, E>>;
 
 /**
  * A successful result
@@ -54,19 +54,17 @@ export function isError<V, E>(result: Result<V, E>): result is IError<E> {
  */
 
 export async function createSafePromise<V>(promise: Promise<V>): SafePromise<V, unknown> {
-    return new Promise(async (resolve) => {
-        try {
-            const value = await promise;
-            resolve({
-                value
-            });
-        } catch (e: unknown) {
-            resolve({
-                error: e
-            });
-        }
+    try {
+        const value = await promise;
+        return {
+            value
+        };
+    } catch (e: unknown) {
+        return {
+            error: e
+        };
+    }
 
-    });
 }
 
 /**
@@ -78,19 +76,15 @@ export async function createSafePromise<V>(promise: Promise<V>): SafePromise<V, 
  * @returns {SafePromise<V, E | unknown>}
  */
 export async function ensureSafePromise<V, E>(promise: SafePromise<V, E>, error?: E): SafePromise<V, E | unknown> {
-    return new Promise(async (resolve) => {
-        try {
-            const value = await promise;
-            resolve(value);
-        } catch (e: unknown) {
-            if (error !== undefined) {
-                resolve({ error })
-                return;
-            }
-            resolve({
-                error: e
-            })
+    try {
+        const value = await promise;
+        return value;
+    } catch (e: unknown) {
+        if (error !== undefined) {
+            return { error };
         }
-
-    });
+        return {
+            error: e
+        };
+    }
 }
