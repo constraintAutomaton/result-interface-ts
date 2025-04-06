@@ -4,8 +4,6 @@
 ![Unit Tests Status](https://img.shields.io/github/actions/workflow/status/constraintAutomaton/result-interface-ts/ci.yml?label=unit+test
 )
 
-
-
 A tiny utility to standardize how you return and handle results that may succeed or fail inspired by Go-style error handling.
 
 ## Installation
