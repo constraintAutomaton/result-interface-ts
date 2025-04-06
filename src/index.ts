@@ -68,3 +68,29 @@ export async function createSafePromise<V>(promise: Promise<V>): SafePromise<V, 
 
     });
 }
+
+/**
+ * Ensures that a `SafePromise` is safe by catching any potential error and resolving it with the provided error value.
+ * If the promise is rejected and no error is provided, an `unknown` error will be used.
+ * 
+ * @param {SafePromise<V, E>} promise - The promise to ensure.
+ * @param {E} [error] - The error to return if the promise is rejected. This parameter is optional.
+ * @returns {SafePromise<V, E | unknown>}
+ */
+export async function ensureSafePromise<V, E>(promise: SafePromise<V, E>, error?: E): SafePromise<V, E | unknown> {
+    return new Promise(async (resolve) => {
+        try {
+            const value = await promise;
+            resolve(value);
+        } catch (e: unknown) {
+            if (error !== undefined) {
+                resolve({ error })
+                return;
+            }
+            resolve({
+                error: e
+            })
+        }
+
+    });
+}
