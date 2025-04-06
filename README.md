@@ -35,8 +35,29 @@ if (isResult(result)) {
 if (isError(result)) {
     console.log(`Unable to get the value because: ${result.error}`);
 }
-```
 
+// We can use `PromiseResult<V, E>` to indicate that a promise is expected 
+// to always resolve with either a value or an error. However, TypeScript cannot guarantee 
+// this behavior at runtime, thus, the promise can still potentially be rejected.
+async function getValueLater(): SafePromise<number,String>{
+    return new Promise((resolve, reject)=>{
+        if (VALUE !== undefined) {
+        resolve({ value: VALUE });
+        return;
+        }
+        reject({ error: "The value is undefined" });
+    });
+}
+// We can ensure the promise always resolves by using the `ensureSafePromise` function. 
+// This function will return the provided error if the promise is rejected, or an `unknown` 
+// error if no default error is provided.
+const result = ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
+```
+## Test
+
+```bash
+bun test
+```
 ## License
 
 This project is licensed under the [MIT License](./LICENSE). See the LICENSE file for more details.
