@@ -17,7 +17,7 @@ export type Result<V, E = Error> = IResult<V> | IError<E>;
  * @template V - The type of the successful result.
  * @template E - The type of the error in case of failure.
  */
-export type SafePromise<V, E> = Promise<Result<V, E>>;
+export type SafePromise<V, E=Error> = Promise<Result<V, E>>;
 
 /**
  * A successful result
