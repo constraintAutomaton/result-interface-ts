@@ -14,7 +14,6 @@ npm install safe-result
 ```ts
 import {type Result, isResult,  isError} from "safe-result";
 
-// A value that might or might not exist
 let VALUE: number | undefined = undefined;
 
 type Result<T, E> = { value: T } | { error: E };
