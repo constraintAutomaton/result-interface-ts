@@ -1,17 +1,19 @@
-# safe-result
+# result-interface
+
+![npm version](https://img.shields.io/npm/v/result-interface)
 
 A tiny utility to standardize how you return and handle results that may succeed or fail inspired by Go-style error handling.
 
 ## Installation
 
 ```bash
-npm install safe-result
+npm i result-interface
 ```
 
 ## Usage
 
 ```ts
-import {type Result, isResult,  isError} from "safe-result";
+import {type Result, isResult,  isError} from "result-interface";
 
 let VALUE: number | undefined = undefined;
 
