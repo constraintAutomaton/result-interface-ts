@@ -26,7 +26,7 @@ function getValue(): Result<number, string> {
     return { error: "The value is undefined" };
 }
 
-const result = getValue();
+let result = getValue();
 
 if (isResult(result)) {
     console.log(`The value is ${result.value}`);
@@ -36,10 +36,32 @@ if (isError(result)) {
     console.log(`Unable to get the value because: ${result.error}`);
 }
 
-// We can use `PromiseResult<V, E>` to indicate that a promise is expected 
+async function getValueUnsafeLater(): Promise<number>{
+    return new Promise((resolve, reject)=>{
+        if (VALUE !== undefined) {
+        resolve({ value: VALUE });
+        return;
+        }
+        reject({ error: "The value is undefined" });
+    });
+}
+
+// Creates a promise that always resolves with a Result. 
+// On failure, it resolves with an error instead of rejecting or throwing an error.
+result: SafePromise<V, unknown> = await createSafePromise(getValueLater());
+
+if (isResult(result)) {
+    console.log(`The value is ${result.value}`);
+}
+
+if (isError(result)) {
+    console.log(`Unable to get the value because: ${result.error}`);
+}
+
+// We can use `SafePromise<V, E>` to indicate that a promise is expected 
 // to always resolve with either a value or an error. However, TypeScript cannot guarantee 
 // this behavior at runtime, thus, the promise can still potentially be rejected.
-async function getValueLater(): SafePromise<number,String>{
+async function getValueLater(): SafePromise<number,string>{
     return new Promise((resolve, reject)=>{
         if (VALUE !== undefined) {
         resolve({ value: VALUE });
@@ -51,7 +73,15 @@ async function getValueLater(): SafePromise<number,String>{
 // We can ensure the promise always resolves by using the `ensureSafePromise` function. 
 // This function will return the provided error if the promise is rejected, or an `unknown` 
 // error if no default error is provided.
-const result = ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
+result = await ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
+
+if (isResult(result)) {
+    console.log(`The value is ${result.value}`);
+}
+
+if (isError(result)) {
+    console.log(`Unable to get the value because: ${result.error}`);
+}
 ```
 ## Test
 
