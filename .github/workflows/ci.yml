@@ -14,13 +14,11 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v4
 
       # Step 2: Set up Bun
       - name: Set up Bun
-        uses: jarrodwatts/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
 
       # Step 3: Install dependencies
       - name: Install dependencies
