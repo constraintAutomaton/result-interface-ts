@@ -48,7 +48,7 @@ async function getValueUnsafeLater(): Promise<number>{
 
 // Creates a promise that always resolves with a Result. 
 // On failure, it resolves with an error instead of rejecting or throwing an error.
-result: SafePromise<V, unknown> = await createSafePromise(getValueLater());
+result: SafePromise<V, unknown> = await createSafePromise(getValueUnsafeLater());
 
 if (isResult(result)) {
     console.log(`The value is ${result.value}`);
