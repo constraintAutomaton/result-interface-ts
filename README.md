@@ -19,8 +19,6 @@ import {type Result, isResult,  isError} from "result-interface";
 
 let VALUE: number | undefined = undefined;
 
-type Result<T, E> = { value: T } | { error: E };
-
 function getValue(): Result<number, string> {
     if (VALUE !== undefined) {
         return { value: VALUE };
