@@ -70,6 +70,7 @@ async function getValueLater(): SafePromise<number,string>{
         reject({ error: "The value is undefined" });
     });
 }
+
 // We can ensure the promise always resolves by using the `ensureSafePromise` function. 
 // This function will return the provided error if the promise is rejected, or an `unknown` 
 // error if no default error is provided.
