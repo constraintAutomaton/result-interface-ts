@@ -7,7 +7,7 @@
   },
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -28,6 +28,7 @@
     "typescript": "^5"
   },
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir dist --sourcemap && tsc --emitDeclarationOnly"
+    "build": "bun build ./src/index.ts --outdir dist --sourcemap && tsc --emitDeclarationOnly",
+    "publish-npm": "bun run build && npm publish"
   }
 }
