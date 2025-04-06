@@ -1,7 +1,6 @@
 # safe-result
 
-A tiny utility to standardize how you return and handle results that may succeed or fail inspired by go error handling.
-
+A tiny utility to standardize how you return and handle results that may succeed or fail inspired by Go-style error handling.
 
 ## Installation
 

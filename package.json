@@ -1,11 +1,29 @@
 {
-  "name": "result-api",
+  "name": "safe-result",
   "module": "index.ts",
   "type": "module",
+  "license": "MIT",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir dist --sourcemap && tsc --emitDeclarationOnly"
   }
 }
