@@ -4,7 +4,7 @@
 ![Unit Tests Status](https://img.shields.io/github/actions/workflow/status/constraintAutomaton/result-interface-ts/ci.yml?label=unit+test
 )
 
-A tiny utility to standardize how to handle results that may succeed or fail inspired by Go-style error handling.
+A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.
 
 ## Installation
 
@@ -14,8 +14,10 @@ npm i result-interface
 
 ## Usage
 
+You can define functions more declaratively when working with possible failures:
+
 ```ts
-import {type Result, isResult,  isError} from "result-interface";
+import { type Result, isError } from "result-interface";
 
 let VALUE: number | undefined = undefined;
 
@@ -26,64 +28,81 @@ function getValue(): Result<number, string> {
     return { error: "The value is undefined" };
 }
 
-let result = getValue();
+const resp: Result = getValue();
 
-if (isResult(result)) {
-    console.log(`The value is ${result.value}`);
+if (isError(resp)) {
+    console.log(`Unable to get the value. Reason: ${resp.error}`);
+    exit(1);
 }
 
-if (isError(result)) {
-    console.log(`Unable to get the value because: ${result.error}`);
-}
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+exit(0);
+```
 
-async function getValueLaterUnsafe(): Promise<number>{
-    return new Promise((resolve, reject)=>{
+You can ensure that a `Promise` will not throw:
+
+```ts
+import { type Result, isError } from "result-interface";
+
+let VALUE: number | undefined = undefined;
+
+async function getValueLaterUnsafe(): Promise<number> {
+    return new Promise((resolve, reject) => {
         if (VALUE !== undefined) {
-        resolve({ value: VALUE });
-        return;
+            resolve({ value: VALUE });
+        } else {
+            reject({ error: "The value is undefined" });
         }
-        reject({ error: "The value is undefined" });
     });
 }
 
 // Creates a promise that always resolves with a Result. 
-// On failure, it resolves with an error instead of rejecting or throwing an error.
-result: SafePromise<V, unknown> = await createSafePromise(getValueLaterUnsafe());
+// On failure, it resolves with an error instead of rejecting or throwing.
+const resp: SafePromise<number, unknown> = await createSafePromise(getValueLaterUnsafe());
 
-if (isResult(result)) {
-    console.log(`The value is ${result.value}`);
+if (isError(resp)) {
+    console.log(`Unable to get the value. Reason: ${resp.error}`);
+    exit(1);
 }
 
-if (isError(result)) {
-    console.log(`Unable to get the value because: ${result.error}`);
-}
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+exit(0);
+```
 
-// We can use `SafePromise<V, E>` to indicate that a promise is expected 
+You can ensure that SafePromises are actually safe:
+
+```ts
+import { type Result, isError } from "result-interface";
+
+let VALUE: number | undefined = undefined;
+
+// `SafePromise<V, E>` indicates that a promise is expected 
 // to always resolve with either a value or an error. However, TypeScript cannot guarantee 
-// this behavior at runtime, thus, the promise can still potentially be rejected.
-async function getValueLater(): SafePromise<number,string>{
-    return new Promise((resolve, reject)=>{
+// this behavior at runtime, so the promise can still potentially be rejected.
+async function getValueLater(): SafePromise<number, string> {
+    return new Promise((resolve, reject) => {
         if (VALUE !== undefined) {
-        resolve({ value: VALUE });
-        return;
+            resolve({ value: VALUE });
+        } else {
+            reject({ error: "The value is undefined" });
         }
-        reject({ error: "The value is undefined" });
     });
 }
 
 // We can ensure the promise always resolves by using the `ensureSafePromise` function. 
 // This function will return the provided error if the promise is rejected, or an `unknown` 
 // error if no default error is provided.
-result = await ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
+const resp: SafePromise<number, string> = await ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
 
-if (isResult(result)) {
-    console.log(`The value is ${result.value}`);
+if (isError(resp)) {
+    console.log(`Unable to get the value. Reason: ${resp.error}`);
+    exit(1);
 }
 
-if (isError(result)) {
-    console.log(`Unable to get the value because: ${result.error}`);
-}
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+exit(0);
 ```
+
 ## Test
 
 ```bash
