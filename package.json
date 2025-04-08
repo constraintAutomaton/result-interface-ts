@@ -10,6 +10,14 @@
   "version": "1.0.6",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "keywords": [
+    "type-safety",
+    "typing",
+    "error-handling",
+    "typescript-utility",
+    "safe-result",
+    "safe-promises"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
