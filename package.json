@@ -5,6 +5,7 @@
   "author": {
     "name": "Bryan-Elliott Tam"
   },
+  "description": "A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.",
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
   "version": "1.0.7",
