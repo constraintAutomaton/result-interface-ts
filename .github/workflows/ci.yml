@@ -26,4 +26,4 @@ jobs:
 
       # Step 4: Run tests with Bun
       - name: Run tests
-        run: bun test
+        run: bun test --coverage
