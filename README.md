@@ -65,7 +65,6 @@ if (isError(resp)) {
 }
 
 console.log(`The value multiplied by two is ${resp.value * 2}`);
-process.exit(0);
 ```
 
 You can ensure that SafePromises are actually safe:
@@ -99,7 +98,19 @@ if (isError(resp)) {
 }
 
 console.log(`The value multiplied by two is ${resp.value * 2}`);
-process.exit(0);
+```
+
+You can use helper functions to generate `IError` and `IResult` types (the possible types of `Result`).
+
+```ts
+import { type Result, isError, createResult, createError } from "result-interface";
+
+function getValue(): Result<number, string> {
+    if (VALUE !== undefined) {
+        return createResult(Value);
+    }
+    return createError("The value is undefined");
+}
 ```
 
 ## Test
