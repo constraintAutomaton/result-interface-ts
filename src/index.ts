@@ -44,6 +44,28 @@ export function isError<V, E>(result: Result<V, E>): result is IError<E> {
 }
 
 /**
+ * Create an IResult
+ * @param {V} value 
+ * @returns {IResult<V>} 
+ */
+export function createResult<V>(value: V): IResult<V> {
+    return {
+        value
+    };
+}
+
+/**
+ * create a IError
+ * @param {E} error 
+ * @returns {IError<E>}
+ */
+export function createError<E>(error: E): IError<E> {
+    return {
+        error
+    };
+}
+
+/**
  * Converts a promise that may throw an error into a promise that always resolves, either with the result or an error.
  * 
  * This utility ensures that the returned promise never rejects. Instead, it will resolve with the result if successful, 
