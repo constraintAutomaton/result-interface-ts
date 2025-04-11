@@ -41,7 +41,7 @@ console.log(`The value multiplied by two is ${resp.value * 2}`);
 You can ensure that a `Promise` will not throw:
 
 ```ts
-import { isError, createSafePromise, type Result } from "result-interface";
+import { isError, safePromise, type Result } from "result-interface";
 
 let VALUE: number | undefined = undefined;
 
@@ -57,40 +57,7 @@ async function getValueLaterUnsafe(): Promise<number> {
 
 // Creates a promise that always resolves with a Result. 
 // On failure, it resolves with an error instead of rejecting or throwing.
-const resp: Result<number, unknown> = await createSafePromise(getValueLaterUnsafe());
-
-if (isError(resp)) {
-    console.log(`Unable to get the value. Reason: ${resp.error}`);
-    process.exit(1);
-}
-
-console.log(`The value multiplied by two is ${resp.value * 2}`);
-```
-
-You can ensure that SafePromises are actually safe:
-
-```ts
-import { type Result, type SafePromise, ensureSafePromise, isError } from "./src/index";
-
-let VALUE: number | undefined = undefined;
-
-// `SafePromise<V, E>` indicates that a promise is expected 
-// to always resolve with either a value or an error. However, TypeScript cannot guarantee 
-// this behavior at runtime, so the promise can still potentially be rejected.
-async function getValueLater(): SafePromise<number, string> {
-    return new Promise((resolve, reject) => {
-        if (VALUE !== undefined) {
-            resolve({ value: VALUE });
-        } else {
-            reject({ error: "The value is undefined" });
-        }
-    });
-}
-
-// We can ensure the promise always resolves by using the `ensureSafePromise` function. 
-// This function will return the provided error if the promise is rejected, or an `unknown` 
-// error if no default error is provided.
-const resp: Result<number, string|unknown> = await ensureSafePromise(getValueLater(), "default error if the safe promise was unsafe");
+const resp: Result<number, unknown> = await safePromise(getValueLaterUnsafe());
 
 if (isError(resp)) {
     console.log(`Unable to get the value. Reason: ${resp.error}`);
@@ -103,13 +70,13 @@ console.log(`The value multiplied by two is ${resp.value * 2}`);
 You can use helper functions to generate `IError` and `IResult` types (the possible types of `Result`).
 
 ```ts
-import { type Result, isError, createResult, createError } from "result-interface";
+import { type Result, isError, result, error } from "result-interface";
 
 function getValue(): Result<number, string> {
     if (VALUE !== undefined) {
-        return createResult(Value);
+        return result(Value);
     }
-    return createError("The value is undefined");
+    return error("The value is undefined");
 }
 ```
 

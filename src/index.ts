@@ -7,7 +7,7 @@
 export type Result<V, E = Error> = IResult<V> | IError<E>;
 
 /**
- * A promise that SHOULD always resolves, returning a `Result<V, E>` to indicate either success or failure.
+ * A promise that always resolves, returning a `Result<V, E>` to indicate either success or failure.
  * 
  * This type ensures that the promise will not reject. Instead, it will resolve with an object of type 
  * `Result<V, E>`, where:
@@ -48,7 +48,7 @@ export function isError<V, E>(result: Result<V, E>): result is IError<E> {
  * @param {V} value 
  * @returns {IResult<V>} 
  */
-export function createResult<V>(value: V): IResult<V> {
+export function result<V>(value: V): IResult<V> {
     return {
         value
     };
@@ -59,7 +59,7 @@ export function createResult<V>(value: V): IResult<V> {
  * @param {E} error 
  * @returns {IError<E>}
  */
-export function createError<E>(error: E): IError<E> {
+export function error<E>(error: E): IError<E> {
     return {
         error
     };
@@ -75,7 +75,7 @@ export function createError<E>(error: E): IError<E> {
  * @returns {SafePromise<V, unknown>} A promise that resolves with the value if successful, or an Error if it fails.
  */
 
-export async function createSafePromise<V>(promise: Promise<V>): SafePromise<V, unknown> {
+export async function safePromise<V>(promise: Promise<V>): SafePromise<V, unknown> {
     try {
         const value = await promise;
         return {
@@ -87,26 +87,4 @@ export async function createSafePromise<V>(promise: Promise<V>): SafePromise<V, 
         };
     }
 
-}
-
-/**
- * Ensures that a `SafePromise` is safe by catching any potential error and resolving it with the provided error value.
- * If the promise is rejected and no error is provided, an `unknown` error will be used.
- * 
- * @param {SafePromise<V, E>} promise - The promise to ensure.
- * @param {E} [error] - The error to return if the promise is rejected. This parameter is optional.
- * @returns {SafePromise<V, E | unknown>}
- */
-export async function ensureSafePromise<V, E>(promise: SafePromise<V, E>, error?: E): SafePromise<V, E | unknown> {
-    try {
-        const value = await promise;
-        return value;
-    } catch (e: unknown) {
-        if (error !== undefined) {
-            return { error };
-        }
-        return {
-            error: e
-        };
-    }
 }
