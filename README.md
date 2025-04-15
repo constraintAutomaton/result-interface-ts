@@ -37,7 +37,61 @@ if (isError(resp)) {
 
 console.log(`The value multiplied by two is ${resp.value * 2}`);
 ```
+You can specify that a `Promise will not throw`:
 
+```ts
+import { isError, SafePromise, type Result } from "result-interface";
+
+let VALUE: number | undefined = undefined;
+
+async function getValueLater(): SafePromise<number,string> {
+    return new Promise((resolve, reject) => {
+        if (VALUE !== undefined) {
+            resolve({
+                value:VALUE
+            })
+        } else {
+            reject("The value is undefined");
+        }
+    });
+}
+
+// Creates a promise that always resolves with a Result. 
+// On failure, it resolves with an error instead of rejecting or throwing.
+const resp: Result<number, string> = await getValueLater();
+
+if (isError(resp)) {
+    console.log(`Unable to get the value. Reason: ${resp.error}`);
+    process.exit(1);
+}
+
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+```
+
+You can specify that a promise will never fail, thus that it will always be an `IResult`:
+```ts
+import { SafePromise, type Result } from "./src/index";
+
+let VALUE: number | undefined = undefined;
+
+async function getValueLater(): SafePromise<number, never> {
+    return new Promise((resolve, reject) => {
+        if (VALUE !== undefined) {
+            resolve({
+                value: VALUE
+            })
+        } else {
+            reject("The value is undefined");
+        }
+    });
+}
+
+// Creates a promise that always resolves with a Result. 
+// On failure, it resolves with an error instead of rejecting or throwing.
+const resp: Result<number, never> = await getValueLater();
+
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+```
 You can ensure that a `Promise` will not throw:
 
 ```ts

@@ -1,10 +1,17 @@
+// the [] on the Generic are to avoid the distribution of type
+// https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
 /**
  * A result that may fail.
  * 
+ * If the `E` template is `never` the `Result` can only be a `IResult<V>`.
  * @template V - The type of the successful result.
  * @template E - The type of the error in case of failure.
  */
-export type Result<V, E = Error> = IResult<V> | IError<E>;
+export type Result<V, E = Error> = [E] extends [never] ? Exclude<PureResult<V, E>, IError<E>> : PureResult<V, E>;
+
+// A `Result` without the the conditional typing.
+// This type only exist has a hack for the type guard. 
+type PureResult<V, E> = IResult<V> | IError<E>;
 
 /**
  * A promise that always resolves, returning a `Result<V, E>` to indicate either success or failure.
@@ -13,7 +20,6 @@ export type Result<V, E = Error> = IResult<V> | IError<E>;
  * `Result<V, E>`, where:
  * - `value`: the successful result of type `V`
  * - `error`: an error of type `E` in case of failure
- *
  * @template V - The type of the successful result.
  * @template E - The type of the error in case of failure.
  */
@@ -39,7 +45,8 @@ export function isResult<V, E>(result: Result<V, E>): result is IResult<V> {
     return "value" in result;
 }
 
-export function isError<V, E>(result: Result<V, E>): result is IError<E> {
+// `PureResult` is used because `E` extend any and if E is `never` then we could not be returning a `IError<E>`
+export function isError<V, E>(result: PureResult<V, E>): result is IError<E> {
     return "error" in result;
 }
 
