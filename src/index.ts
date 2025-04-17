@@ -81,7 +81,6 @@ export function error<E>(error: E): IError<E> {
  * @param {Promise<V>} promise - The promise to be transformed.
  * @returns {SafePromise<V, unknown>} A promise that resolves with the value if successful, or an Error if it fails.
  */
-
 export async function safePromise<V>(promise: Promise<V>): SafePromise<V, unknown> {
     try {
         const value = await promise;
