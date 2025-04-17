@@ -41,6 +41,6 @@
     "build:all" : "bun run build && bun run build:cjs",
     "build": "bun build ./src/index.ts --outdir dist --sourcemap --outdir dist/esm --production && tsc --emitDeclarationOnly",
     "build:cjs": "bun build ./src/index.ts --format 'cjs' --outdir dist/cjs --sourcemap --production && tsc --emitDeclarationOnly",
-    "publish-npm": "build:all && npm publish"
+    "publish-npm": "bun run build:all && npm publish"
   }
 }
