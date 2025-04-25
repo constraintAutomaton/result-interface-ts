@@ -55,7 +55,7 @@ export function isError<V, E>(result: PureResult<V, E>): result is IError<E> {
  * @param {V} value 
  * @returns {IResult<V>} 
  */
-export function result<V>(value: V): IResult<V> {
+export function result<V>(value: V = undefined as V): IResult<V> {
     return {
         value
     };
@@ -66,7 +66,7 @@ export function result<V>(value: V): IResult<V> {
  * @param {E} error 
  * @returns {IError<E>}
  */
-export function error<E>(error: E): IError<E> {
+export function error<E>(error: E = undefined as E): IError<E> {
     return {
         error
     };
