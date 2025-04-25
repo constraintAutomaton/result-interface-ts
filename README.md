@@ -45,7 +45,7 @@ import { type Result, isError, result, error } from "result-interface";
 
 function getValue(): Result<number, string> {
     if (VALUE !== undefined) {
-        return result(Value);
+        return result(VALUE);
     }
     return error("The value is undefined");
 }
