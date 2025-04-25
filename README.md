@@ -37,6 +37,20 @@ if (isError(resp)) {
 
 console.log(`The value multiplied by two is ${resp.value * 2}`);
 ```
+
+You can use helper functions to generate `IError` and `IResult` types (the possible types of `Result`).
+
+```ts
+import { type Result, isError, result, error } from "result-interface";
+
+function getValue(): Result<number, string> {
+    if (VALUE !== undefined) {
+        return result(Value);
+    }
+    return error("The value is undefined");
+}
+```
+
 You can specify that a `Promise will not throw`:
 
 ```ts
@@ -121,18 +135,6 @@ if (isError(resp)) {
 console.log(`The value multiplied by two is ${resp.value * 2}`);
 ```
 
-You can use helper functions to generate `IError` and `IResult` types (the possible types of `Result`).
-
-```ts
-import { type Result, isError, result, error } from "result-interface";
-
-function getValue(): Result<number, string> {
-    if (VALUE !== undefined) {
-        return result(Value);
-    }
-    return error("The value is undefined");
-}
-```
 
 ## Test
 
