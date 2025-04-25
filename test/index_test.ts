@@ -86,7 +86,7 @@ describe(error.name, () => {
 });
 
 describe(result.name, () => {
-    it("should create an error", () => {
+    it("should create a result", () => {
         expect(result("foo")).toStrictEqual({ value: "foo" });
     });
 });
