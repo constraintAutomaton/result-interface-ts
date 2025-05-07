@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { type IError, isError, isResult, type IResult, safePromise, type SafePromise, error, result } from '../src/index';
+import { type IError, isError, Result, isResult, type IResult, safePromise, type SafePromise, error, result, unwrap } from '../src/index';
 
 describe(isError.name, () => {
     it("should return true given an error", () => {
@@ -88,5 +88,17 @@ describe(error.name, () => {
 describe(result.name, () => {
     it("should create a result", () => {
         expect(result("foo")).toStrictEqual({ value: "foo" });
+    });
+});
+
+describe(unwrap.name, () => {
+    it("should return a result", () => {
+        const res: Result<string, number> = result("foo");
+        expect(unwrap(res)).toBe("foo")
+    });
+
+    it("should return an error", () => {
+        const res: Result<string, number> = error(3);
+        expect(unwrap(res)).toBe(3)
     });
 });

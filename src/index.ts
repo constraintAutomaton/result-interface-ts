@@ -62,6 +62,18 @@ export function result<V>(value: V = undefined as V): IResult<V> {
 }
 
 /**
+ * Return the underline value of the result
+ * @param {Result<V, E>} res - the result 
+ * @returns {V|E}
+ */
+export function unwrap<V, E>(res: Result<V, E>): V | E {
+    if(isError(res)){
+        return res.error;
+    }
+    return res.value;
+}
+
+/**
  * create a IError
  * @param {E} error 
  * @returns {IError<E>}
