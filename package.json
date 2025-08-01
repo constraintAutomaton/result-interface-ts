@@ -1,6 +1,6 @@
 {
   "name": "result-interface",
-  "module": "index.ts",
+  "module": "./dist/esm/index.js",
   "type": "module",
   "author": {
     "name": "Bryan-Elliott Tam"
@@ -8,9 +8,7 @@
   "description": "A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.",
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
-  "version": "2.3.1",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "version": "2.3.2",
   "keywords": [
     "type-safety",
     "typing",
@@ -22,10 +20,11 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/cjs/index.cjs"
     }
   },
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "LICENSE",
@@ -40,7 +39,7 @@
   "scripts": {
     "build:all" : "bun run build && bun run build:cjs && tsc --emitDeclarationOnly",
     "build": "bun build ./src/index.ts --outdir dist --sourcemap --outdir dist/esm --production",
-    "build:cjs": "bun build ./src/index.ts --format 'cjs' --outdir dist/cjs --sourcemap --production",
+    "build:cjs": "bun build ./src/index.ts --format cjs --outdir ./dist/cjs --sourcemap --production && mv ./dist/cjs/index.js ./dist/cjs/index.cjs",
     "publish-npm": "bun run build:all && npm publish"
   }
 }
