@@ -8,7 +8,7 @@
   "description": "A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.",
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "keywords": [
     "type-safety",
     "typing",
@@ -19,8 +19,14 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
   },
   "main": "./dist/cjs/index.cjs",
