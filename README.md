@@ -143,8 +143,7 @@ They live behind optional subpath imports, so the core stays dependency-free: yo
 the adapter for the framework you use.
 
 Vitest, Jest and Bun get two matchers (`toBeResult`, `toBeError`); Chai gets two assertions
-(`.result`, `.resultError`). Each takes an optional argument to also deep-equal the result value or
-the error.
+(`.result`, `.resultError`). Any expected value passed is compared by deep equality.
 
 ### Vitest
 
