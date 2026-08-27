@@ -1,9 +1,6 @@
 import { isError, isResult, type Result } from "../index";
 
-/**
- * The subset of a matcher's `this` context these matchers rely on. Vitest, Jest and Bun all
- * provide `equals` for deep structural comparison.
- */
+
 export interface MatcherContext {
     equals(a: unknown, b: unknown): boolean;
 }
@@ -14,7 +11,7 @@ export interface MatcherResult {
     message: () => string;
 }
 
-/** Assert the value is an ok `Result`; with an argument, also deep-equals the ok value. */
+/** Assert the value is a result, with an argument, also deep-equals the ok value. */
 export function toBeResult(
     this: MatcherContext,
     received: Result<unknown, unknown>,
@@ -23,7 +20,7 @@ export function toBeResult(
     if (!isResult(received)) {
         return {
             pass: false,
-            message: () => `expected an ok result, got error: ${stringify(received.error)}`
+            message: () => `expected a result, got error: ${stringify(received.error)}`
         };
     }
     if (expected.length === 0) {
@@ -32,11 +29,11 @@ export function toBeResult(
     return {
         pass: this.equals(received.value, expected[0]),
         message: () =>
-            `ok value mismatch\nexpected: ${stringify(expected[0])}\nreceived: ${stringify(received.value)}`
+            `result value mismatch\nexpected: ${stringify(expected[0])}\nreceived: ${stringify(received.value)}`
     };
 }
 
-/** Assert the value is an error `Result`; with an argument, also deep-equals the error. */
+/** Assert the value is an error, with an argument, also deep-equals the error. */
 export function toBeError(
     this: MatcherContext,
     received: Result<unknown, unknown>,
