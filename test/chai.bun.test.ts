@@ -7,7 +7,7 @@ chai.use(resultInterfaceChai);
 const { expect } = chai;
 
 describe("chai result matchers", () => {
-    it("result passes for ok values", () => {
+    it("result passes for successful values", () => {
         expect(result(42)).to.be.result();
         expect(result(42)).to.be.result(42);
         expect(error("x")).to.not.be.result();
