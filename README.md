@@ -143,7 +143,7 @@ They live behind optional subpath imports, so the core stays dependency-free: yo
 the adapter for the framework you use.
 
 Vitest, Jest and Bun get two matchers (`toBeResult`, `toBeError`); Chai gets two assertions
-(`.result`, `.resultError`). Each takes an optional argument to also deep-equal the ok value or
+(`.result`, `.resultError`). Each takes an optional argument to also deep-equal the result value or
 the error.
 
 ### Vitest
@@ -171,6 +171,9 @@ import { result, error } from 'result-interface';
 it('asserts on results', () => {
     expect(result(42)).toBeResult(42);
     expect(error('boom')).toBeError('boom');
+
+    // The argument is compared by deep equality, so nested values work the same way.
+    expect(result({ id: 1, roles: ['admin'] })).toBeResult({ id: 1, roles: ['admin'] });
 });
 ```
 
