@@ -16,3 +16,6 @@ declare module "bun:test" {
         toBeError(expected?: unknown): unknown;
     }
 }
+
+// Re-exported so this file is a module: its `declare module` augments, not replaces, bun:test's types.
+export { toBeError, toBeResult };

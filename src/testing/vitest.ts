@@ -14,3 +14,6 @@ declare module "vitest" {
     interface Assertion<T> extends ResultMatchers<T> {}
     interface AsymmetricMatchersContaining extends ResultMatchers {}
 }
+
+// Re-exported so this file is a module: its `declare module` augments, not replaces, vitest's types.
+export { toBeError, toBeResult };

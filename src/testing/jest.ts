@@ -13,3 +13,6 @@ interface ResultMatchers<R = void> {
 declare module "@jest/expect" {
     interface Matchers<R> extends ResultMatchers<R> {}
 }
+
+// Re-exported so this file is a module: its `declare module` augments, not replaces, Jest's types.
+export { toBeError, toBeResult };
