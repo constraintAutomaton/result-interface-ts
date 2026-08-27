@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      # Step 4: Run tests with Bun
+      # Step 4: Type-check
+      - name: Type-check
+        run: bun run typecheck
+
+      # Step 5: Run tests across bun, vitest and jest
       - name: Run tests
-        run: bun test --coverage
+        run: bun run test
