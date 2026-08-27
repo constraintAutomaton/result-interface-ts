@@ -11,7 +11,7 @@ export interface MatcherResult {
     message: () => string;
 }
 
-/** Assert the value is a result, with an argument, also deep-equals the ok value. */
+/** Assert the value is a successful `Result`; with an argument, also deep-equals the value. */
 export function toBeResult(
     this: MatcherContext,
     received: Result<unknown, unknown>,
@@ -24,7 +24,7 @@ export function toBeResult(
         };
     }
     if (expected.length === 0) {
-        return { pass: true, message: () => "expected the value not to be an ok result" };
+        return { pass: true, message: () => "expected the value not to be a successful result" };
     }
     return {
         pass: this.equals(received.value, expected[0]),

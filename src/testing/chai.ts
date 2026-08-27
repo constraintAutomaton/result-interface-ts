@@ -13,32 +13,23 @@ interface ResultAssertion {
 }
 
 /**
- * A Chai plugin adding `.result` and `.resultError` assertions. Register it with `chai.use`:
- *
- * ```ts
- * import * as chai from "chai";
- * import { resultInterfaceChai } from "result-interface/chai";
- * chai.use(resultInterfaceChai);
- *
- * expect(result(42)).to.be.result(42);
- * expect(error("boom")).to.be.resultError("boom");
- * ```
+ * A Chai plugin adding `.result` and `.resultError` assertions.
  */
 export function resultInterfaceChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils): void {
     chai.Assertion.addMethod("result", function (this: Chai.AssertionStatic, ...expected: unknown[]) {
         const self = this as unknown as ResultAssertion;
         const res = self._obj as Result<unknown, unknown>;
-        const ok = isResult(res);
+        const isValue = isResult(res);
         self.assert(
-            ok && (expected.length === 0 || utils.eql(res.value, expected[0])),
+            isValue && (expected.length === 0 || utils.eql(res.value, expected[0])),
             expected.length === 0
-                ? "expected #{this} to be an ok result"
-                : "expected the ok value to equal #{exp}",
+                ? "expected #{this} to be a successful result"
+                : "expected the value to equal #{exp}",
             expected.length === 0
-                ? "expected #{this} not to be an ok result"
-                : "expected the ok value not to equal #{exp}",
+                ? "expected #{this} not to be a successful result"
+                : "expected the value not to equal #{exp}",
             expected[0],
-            ok ? res.value : undefined
+            isValue ? res.value : undefined
         );
     });
 
@@ -67,7 +58,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Chai {
         interface Assertion {
-            /** Assert the value is an ok Result; with an argument, also deep-equals the ok value. */
+            /** Assert the value is a successful Result; with an argument, also deep-equals the value. */
             result(expected?: unknown): Assertion;
             /** Assert the value is an error Result; with an argument, also deep-equals the error. */
             resultError(expected?: unknown): Assertion;

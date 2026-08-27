@@ -6,7 +6,7 @@ expect.extend({ toBeResult, toBeError } as unknown as Parameters<typeof expect.e
 
 declare module "bun:test" {
     interface Matchers<T> {
-        /** Assert the value is an ok Result; with an argument, also deep-equals the ok value. */
+        /** Assert the value is a successful Result; with an argument, also deep-equals the value. */
         toBeResult(expected?: unknown): T;
         /** Assert the value is an error Result; with an argument, also deep-equals the error. */
         toBeError(expected?: unknown): T;
