@@ -111,6 +111,9 @@
     },
     "chai": {
       "optional": true
+    },
+    "typescript":{
+      "optional": true
     }
   }
 }
