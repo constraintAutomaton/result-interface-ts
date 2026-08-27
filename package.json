@@ -1,6 +1,5 @@
 {
   "name": "result-interface",
-  "module": "./dist/esm/index.js",
   "type": "module",
   "author": {
     "name": "Bryan-Elliott Tam"
@@ -8,7 +7,7 @@
   "description": "A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.",
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "keywords": [
     "type-safety",
     "typing",
@@ -17,35 +16,101 @@
     "safe-result",
     "safe-promises"
   ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/esm/index.js"
+        "default": "./dist/index.js"
       },
       "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/cjs/index.cjs"
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./vitest": {
+      "import": {
+        "types": "./dist/testing/vitest.d.ts",
+        "default": "./dist/testing/vitest.js"
+      },
+      "require": {
+        "types": "./dist/testing/vitest.d.cts",
+        "default": "./dist/testing/vitest.cjs"
+      }
+    },
+    "./jest": {
+      "import": {
+        "types": "./dist/testing/jest.d.ts",
+        "default": "./dist/testing/jest.js"
+      },
+      "require": {
+        "types": "./dist/testing/jest.d.cts",
+        "default": "./dist/testing/jest.cjs"
+      }
+    },
+    "./bun": {
+      "import": {
+        "types": "./dist/testing/bun.d.ts",
+        "default": "./dist/testing/bun.js"
+      },
+      "require": {
+        "types": "./dist/testing/bun.d.cts",
+        "default": "./dist/testing/bun.cjs"
+      }
+    },
+    "./chai": {
+      "import": {
+        "types": "./dist/testing/chai.d.ts",
+        "default": "./dist/testing/chai.js"
+      },
+      "require": {
+        "types": "./dist/testing/chai.d.cts",
+        "default": "./dist/testing/chai.cjs"
       }
     }
   },
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "LICENSE",
     "README.md"
   ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "bun run test:bun && bun run test:vitest && bun run test:jest",
+    "test:bun": "bun test bun.test",
+    "test:vitest": "vitest run",
+    "test:jest": "jest",
+    "publish-npm": "bun run build && npm publish"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@jest/globals": "^30.4.1",
+    "@swc/core": "^1.16.1",
+    "@swc/jest": "^0.2.39",
+    "@types/bun": "latest",
+    "@vitest/coverage-v8": "^4.1.11",
+    "chai": "^6.2.2",
+    "jest": "^30.4.2",
+    "tsup": "^8.5.1",
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "*",
+    "@jest/globals": "*",
+    "chai": "*"
   },
-  "scripts": {
-    "build:all" : "bun run build && bun run build:cjs && tsc --emitDeclarationOnly",
-    "build": "bun build ./src/index.ts --outdir dist --sourcemap --outdir dist/esm --production",
-    "build:cjs": "bun build ./src/index.ts --format cjs --outdir ./dist/cjs --sourcemap --production && mv ./dist/cjs/index.js ./dist/cjs/index.cjs",
-    "publish-npm": "bun run build:all && npm publish"
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    },
+    "@jest/globals": {
+      "optional": true
+    },
+    "chai": {
+      "optional": true
+    }
   }
 }

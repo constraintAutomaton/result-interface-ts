@@ -136,6 +136,92 @@ console.log(`The value multiplied by two is ${resp.value * 2}`);
 ```
 
 
+## Testing matchers
+
+`result-interface` ships optional matchers so tests can assert on `Result` values directly.
+They live behind optional subpath imports, so the core stays dependency-free: you only pull in
+the adapter for the framework you use.
+
+Vitest, Jest and Bun get two matchers (`toBeResult`, `toBeError`); Chai gets two assertions
+(`.result`, `.resultError`). Each takes an optional argument to also deep-equal the ok value or
+the error.
+
+### Vitest
+
+Register the matchers in one of two ways. Either import the adapter (it registers the matchers
+and their types on import), in a shared setup file or at the top of a test:
+
+```ts
+import 'result-interface/vitest';
+```
+
+Or register it globally via your Vitest config:
+
+```ts
+// vitest.config.ts
+export default { test: { setupFiles: ['result-interface/vitest'] } };
+```
+
+Then assert on results:
+
+```ts
+import { expect, it } from 'vitest';
+import { result, error } from 'result-interface';
+
+it('asserts on results', () => {
+    expect(result(42)).toBeResult(42);
+    expect(error('boom')).toBeError('boom');
+});
+```
+
+### Jest
+
+```js
+// jest.config.js
+module.exports = { setupFilesAfterEnv: ['result-interface/jest'] };
+```
+
+```ts
+import { expect, it } from '@jest/globals';
+import { result, error } from 'result-interface';
+
+it('asserts on results', () => {
+    expect(result(42)).toBeResult(42);
+    expect(error('boom')).toBeError('boom');
+});
+```
+
+### Bun
+
+```toml
+# bunfig.toml
+[test]
+preload = ["result-interface/bun"]
+```
+
+```ts
+import { expect, it } from 'bun:test';
+import { result, error } from 'result-interface';
+
+it('asserts on results', () => {
+    expect(result(42)).toBeResult(42);
+    expect(error('boom')).toBeError('boom');
+});
+```
+
+### Chai
+
+```ts
+import * as chai from 'chai';
+import { resultInterfaceChai } from 'result-interface/chai';
+import { result, error } from 'result-interface';
+
+chai.use(resultInterfaceChai);
+
+chai.expect(result(42)).to.be.result(42);
+chai.expect(error('boom')).to.be.resultError('boom');
+```
+
 ## Test
 
 ```bash
