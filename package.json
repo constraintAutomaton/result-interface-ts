@@ -7,7 +7,7 @@
   "description": "A tiny utility (mainly interfaces) with zero dependencies to standardize handling results that may succeed or fail, inspired by Go-style error handling.",
   "homepage": "https://github.com/constraintAutomaton/result-interface-ts",
   "license": "MIT",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "keywords": [
     "type-safety",
     "typing",
@@ -94,6 +94,7 @@
     "chai": "^6.2.2",
     "jest": "^30.4.2",
     "tsup": "^8.5.1",
+    "typescript": "^5.8.3",
     "vitest": "^4.1.11"
   },
   "peerDependencies": {
