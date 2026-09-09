@@ -19,13 +19,11 @@
       "peerDependencies": {
         "@jest/globals": "*",
         "chai": "*",
-        "typescript": "^5",
         "vitest": "*",
       },
       "optionalPeers": [
         "@jest/globals",
         "chai",
-        "typescript",
         "vitest",
       ],
     },

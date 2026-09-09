@@ -15,13 +15,28 @@ export interface MatcherResult {
     message: () => string;
 }
 
+/** Whether what the framework handed the matcher is a `Result` at all. */
+function isResultLike(received: unknown): received is Result<unknown, unknown> {
+    return (
+        typeof received === "object" &&
+        received !== null &&
+        ("value" in received || "error" in received)
+    );
+}
+
 /** Assert the value is a successful `Result`; with an argument, also deep-equals the value. */
 export function toBeResult(
     this: MatcherContext,
-    received: Result<unknown, unknown>,
+    received: unknown,
     ...expected: unknown[]
 ): MatcherResult {
     const { printReceived, printExpected } = this.utils;
+    if (!isResultLike(received)) {
+        return {
+            pass: false,
+            message: () => `expected a result, got: ${printReceived(received)}`
+        };
+    }
     if (!isResult(received)) {
         return {
             pass: false,
@@ -41,10 +56,16 @@ export function toBeResult(
 /** Assert the value is an error, with an argument, also deep-equals the error. */
 export function toBeError(
     this: MatcherContext,
-    received: Result<unknown, unknown>,
+    received: unknown,
     ...expected: unknown[]
 ): MatcherResult {
     const { printReceived, printExpected } = this.utils;
+    if (!isResultLike(received)) {
+        return {
+            pass: false,
+            message: () => `expected an error result, got: ${printReceived(received)}`
+        };
+    }
     if (!isError(received)) {
         return {
             pass: false,

@@ -21,6 +21,13 @@ describe("toBeResult", () => {
     it("fails when negated on a successful result", () => {
         expect(() => expect(result(1)).not.toBeResult()).toThrow();
     });
+
+    it("fails on a value that is no result at all", () => {
+        expect(() => expect(42).toBeResult()).toThrow();
+        expect(() => expect(null).toBeResult()).toThrow();
+        expect(() => expect({ other: 1 }).toBeResult()).toThrow();
+        expect(42).not.toBeResult();
+    });
 });
 
 describe("toBeError", () => {
@@ -40,5 +47,12 @@ describe("toBeError", () => {
 
     it("fails when negated on an error result", () => {
         expect(() => expect(error("x")).not.toBeError()).toThrow();
+    });
+
+    it("fails on a value that is no result at all", () => {
+        expect(() => expect("boom").toBeError()).toThrow();
+        expect(() => expect(undefined).toBeError()).toThrow();
+        expect(() => expect({ other: 1 }).toBeError()).toThrow();
+        expect("boom").not.toBeError();
     });
 });
