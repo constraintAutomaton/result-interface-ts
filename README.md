@@ -59,13 +59,15 @@ import { isError, SafePromise, type Result } from "result-interface";
 let VALUE: number | undefined = undefined;
 
 async function getValueLater(): SafePromise<number,string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         if (VALUE !== undefined) {
             resolve({
-                value:VALUE
+                value: VALUE
             })
         } else {
-            reject("The value is undefined");
+            resolve({
+                error: "The value is undefined"
+            })
         }
     });
 }
@@ -84,24 +86,20 @@ console.log(`The value multiplied by two is ${resp.value * 2}`);
 
 You can specify that a promise will never fail, thus that it will always be an `IResult`:
 ```ts
-import { SafePromise, type Result } from "./src/index";
+import { SafePromise, type Result } from "result-interface";
 
-let VALUE: number | undefined = undefined;
+const VALUE: number = 42;
 
 async function getValueLater(): SafePromise<number, never> {
-    return new Promise((resolve, reject) => {
-        if (VALUE !== undefined) {
-            resolve({
-                value: VALUE
-            })
-        } else {
-            reject("The value is undefined");
-        }
+    return new Promise((resolve) => {
+        resolve({
+            value: VALUE
+        })
     });
 }
 
-// Creates a promise that always resolves with a Result. 
-// On failure, it resolves with an error instead of rejecting or throwing.
+// With E set to `never`, there is no valid way to construct an error Result,
+// so the promise is guaranteed by its type to always resolve with a value.
 const resp: Result<number, never> = await getValueLater();
 
 console.log(`The value multiplied by two is ${resp.value * 2}`);
@@ -135,6 +133,39 @@ if (isError(resp)) {
 console.log(`The value multiplied by two is ${resp.value * 2}`);
 ```
 
+### ⚠️ Counter-example: `SafePromise` is just a type, not a guarantee
+
+`SafePromise<V, E>` is defined as `Promise<Result<V, E>>` — a plain type alias. Nothing in
+TypeScript stops you from still calling `reject` inside the executor. You cannot type yourself
+out of a promise that actually rejects; **you** are responsible for making sure it never does.
+
+```ts
+import { isError, SafePromise, type Result } from "result-interface";
+
+let VALUE: number | undefined = undefined;
+
+// ❌ Typed as SafePromise, but still rejects on failure.
+async function getValueLater(): SafePromise<number, string> {
+    return new Promise((resolve, reject) => {
+        if (VALUE !== undefined) {
+            resolve({
+                value: VALUE
+            })
+        } else {
+            reject("The value is undefined"); // this still throws at runtime
+        }
+    });
+}
+
+// resp is typed Result<number, string>, but awaiting getValueLater() here
+// can still throw.
+if (isError(resp)) {
+    console.log(`Unable to get the value. Reason: ${resp.error}`);
+    process.exit(1);
+}
+
+console.log(`The value multiplied by two is ${resp.value * 2}`);
+```
 
 ## Testing matchers
 
